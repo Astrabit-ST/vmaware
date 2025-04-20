@@ -322,56 +322,54 @@
 #include <optional>
 #endif
 #ifdef __VMAWARE_DEBUG__
-#include <codecvt>
 #include <iomanip>
 #include <ios>
 #include <locale>
+#include <codecvt>
 #endif
 
-#include <algorithm>
-#include <array>
-#include <atomic>
-#include <bitset>
-#include <cassert>
-#include <cmath>
-#include <cstdint>
-#include <cstring>
-#include <fstream>
 #include <functional>
-#include <iostream>
-#include <map>
-#include <regex>
-#include <sstream>
+#include <cstring>
 #include <string>
+#include <fstream>
+#include <regex>
 #include <thread>
-#include <type_traits>
+#include <cstdint>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
+#include <array>
+#include <algorithm>
+#include <iostream>
+#include <cassert>
+#include <cmath>
+#include <sstream>
+#include <bitset>
+#include <type_traits>
+#include <atomic>
 
 #if (WINDOWS)
-#include <intrin.h>
-#include <iphlpapi.h>
-#include <psapi.h>
-#include <shlwapi.h>
-#include <tchar.h>
 #include <windows.h>
+#include <intrin.h>
+#include <tchar.h>
+#include <iphlpapi.h>
 #include <winioctl.h>
 #include <winternl.h>
 #include <winuser.h>
-#if (MSVC)
+#include <psapi.h>
+#include <shlwapi.h>
 #include <shlobj_core.h>
-#endif
-#include <Functiondiscoverykeys_devpkey.h>
-#include <d3d9.h>
 #include <dshow.h>
-#include <dxgi.h>
 #include <io.h>
-#include <mmdeviceapi.h>
-#include <mmsystem.h>
-#include <powerbase.h>
-#include <queue>
-#include <setupapi.h>
 #include <winspool.h>
+#include <powerbase.h>
+#include <setupapi.h>
+#include <mmdeviceapi.h>
+#include <Functiondiscoverykeys_devpkey.h>
+#include <mmsystem.h>
+#include <queue>
+#include <dxgi.h>
+#include <d3d9.h>
 
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3d9.lib")
@@ -392,30 +390,30 @@
 #elif (LINUX)
 #if (x86)
 #include <cpuid.h>
-#include <immintrin.h>
 #include <x86intrin.h>
+#include <immintrin.h>
 #endif
-#include <cctype>
-#include <dirent.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <memory>
-#include <net/if.h> 
-#include <netinet/in.h>
-#include <string.h>
-#include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
+#include <sys/ioctl.h>
 #include <sys/syscall.h>
 #include <sys/sysinfo.h>
+#include <net/if.h> 
+#include <netinet/in.h>
 #include <unistd.h>
+#include <string.h>
+#include <dirent.h>
+#include <memory>
+#include <cctype>
+#include <fcntl.h>
+#include <limits.h>
 #elif (APPLE)
-#include <chrono>
-#include <errno.h>
-#include <sys/sysctl.h>
 #include <sys/types.h>
-#include <time.h>
+#include <sys/sysctl.h>
 #include <unistd.h>
+#include <time.h>
+#include <errno.h>
+#include <chrono>
 #endif
 
 #ifdef _MSC_VER
@@ -433,9 +431,9 @@
 #endif
 
 // macro shortcut to disable MSVC warnings
-#if (MSVC)
-#define MSVC_DISABLE_WARNING(...)
-#define MSVC_ENABLE_WARNING(...)
+#if (WINDOWS)
+#define MSVC_DISABLE_WARNING(...) __pragma(warning(disable : __VA_ARGS__))
+#define MSVC_ENABLE_WARNING(...) __pragma(warning(default : __VA_ARGS__))
 #else
 #define MSVC_DISABLE_WARNING(...)
 #define MSVC_ENABLE_WARNING(...)
@@ -537,7 +535,7 @@ namespace brands {
     static constexpr const char* NOIRVISOR = "NoirVisor";
     static constexpr const char* QIHOO = "Qihoo 360 Sandbox";
     static constexpr const char* NSJAIL = "nsjail";
-} // namespace brands
+}
 
 
 
