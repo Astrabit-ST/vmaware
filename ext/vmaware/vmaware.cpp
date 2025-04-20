@@ -1,48 +1,67 @@
-#include "vmaware.hpp"
+// we have to wrap because msvc moment
+#include "../vmaware_wrapper/vmaware_wrapper.h"
+
 #include "ruby.h"
-#include "ruby/backward/cxxanyargs.hpp"
 #include <cstdint>
 #include <string>
 
-VALUE vm_detect(VALUE self) {
-  bool is_vm = VM::detect();
+VALUE rb_vm_detect(VALUE self) {
+  bool is_vm = vm_detect();
   return is_vm ? Qtrue : Qfalse;
 }
 
-VALUE vm_percentage(VALUE self) {
-  uint8_t percentage = VM::percentage();
+VALUE rb_vm_percentage(VALUE self) {
+  uint8_t percentage = vm_percentage();
   return INT2NUM(percentage);
 }
 
-VALUE vm_brand(VALUE self) {
-  std::string brand = VM::brand();
-  VALUE rb_brand = rb_str_new(brand.data(), brand.size());
+VALUE rb_vm_brand(VALUE self) {
+  size_t len = vm_brand(NULL, 0);
+  char *buf = new char[len];
+
+  vm_brand(buf, len);
+
+  VALUE rb_brand = rb_str_new(buf, len);
+
+  delete[] buf;
   return rb_brand;
 }
 
-VALUE vm_type(VALUE self) {
-  std::string type = VM::type();
-  VALUE rb_type = rb_str_new(type.data(), type.size());
+VALUE rb_vm_type(VALUE self) {
+  size_t len = vm_type(NULL, 0);
+  char *buf = new char[len];
+
+  vm_type(buf, len);
+
+  VALUE rb_type = rb_str_new(buf, len);
+  delete[] buf;
+
   return rb_type;
 }
 
-VALUE vm_conclusion(VALUE self) {
-  std::string conclusion = VM::conclusion();
-  VALUE rb_conclusion = rb_str_new(conclusion.data(), conclusion.size());
+VALUE rb_vm_conclusion(VALUE self) {
+  size_t len = vm_conclusion(NULL, 0);
+  char *buf = new char[len];
+
+  vm_conclusion(buf, len);
+
+  VALUE rb_conclusion = rb_str_new(buf, len);
+  delete[] buf;
+
   return rb_conclusion;
 }
 
-VALUE vm_detected_count(VALUE self) {
-  uint8_t detected_count = VM::detected_count();
+VALUE rb_vm_detected_count(VALUE self) {
+  uint8_t detected_count = vm_detected_count();
   return INT2NUM(detected_count);
 }
 
 extern "C" void Init_vmaware(void) {
   VALUE module = rb_define_module("VmAware");
-  rb_define_module_function(module, "detect", vm_detect, 0);
-  rb_define_module_function(module, "percentage", vm_percentage, 0);
-  rb_define_module_function(module, "brand", vm_brand, 0);
-  rb_define_module_function(module, "type", vm_type, 0);
-  rb_define_module_function(module, "conclusion", vm_conclusion, 0);
-  rb_define_module_function(module, "detected_count", vm_detected_count, 0);
+  rb_define_module_function(module, "detect", rb_vm_detect, 0);
+  rb_define_module_function(module, "percentage", rb_vm_percentage, 0);
+  rb_define_module_function(module, "brand", rb_vm_brand, 0);
+  rb_define_module_function(module, "type", rb_vm_type, 0);
+  rb_define_module_function(module, "conclusion", rb_vm_conclusion, 0);
+  rb_define_module_function(module, "detected_count", rb_vm_detected_count, 0);
 }
